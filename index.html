@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal TechYago</title>
+  <style>
+    :root {
+      --bg-main: #000000;
+      --bg-header: #0a0a0a;
+      --bg-tab: #1a1a1a;
+      --bg-card: #111;
+      --highlight: #FFD700;
+      --text-color: #4fc3f7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-main);
+      color: var(--text-color);
+    }
+
+    header {
+      background-color: var(--bg-header);
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--highlight);
+      box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+      border-bottom: 2px solid var(--highlight);
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      background-color: var(--bg-tab);
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--highlight);
+    }
+
+    nav button {
+      background-color: transparent;
+      border: 1px solid var(--highlight);
+      color: var(--text-color);
+      padding: 0.75rem 1.25rem;
+      margin: 0.25rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 0.5rem;
+      transition: background 0.3s, transform 0.2s, color 0.3s;
+    }
+
+    nav button:hover {
+      background-color: var(--highlight);
+      color: #000;
+      transform: scale(1.05);
+    }
+
+    .content {
+      padding: 2rem;
+      display: none;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    .content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background-color: var(--bg-card);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
+      border: 1px solid var(--highlight);
+    }
+
+    footer {
+      text-align: center;
+      color: var(--text-color);
+      font-size: 0.9rem;
+      padding: 2rem 1rem;
+      border-top: 1px solid var(--highlight);
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>Portal TechYago</header>
+
+  <nav>
+    <button onclick="showTab('arquitetura')">Arquitetura</button>
+    <button onclick="showTab('sistemas')">Sistemas Operacionais</button>
+    <button onclick="showTab('web')">Programação Web</button>
+    <button onclick="showTab('htmlcss')">HTML/CSS</button>
+    <button onclick="showTab('logica')">Lógica de Programação</button>
+    <button onclick="showTab('robotica')">Noções de Robótica</button>
+    <button onclick="showTab('java')">POO em Java</button>
+    <button onclick="showTab('gestao')">Gestão de Tempo</button>
+  </nav>
+
+  <main>
+    <div id="arquitetura" class="content active">
+      <div class="card">
+        <h2>Arquitetura e Manutenção de Computadores</h2>
+        <p>Conteúdo em breve...</p>
+      </div>
+    </div>
+
+    <div id="sistemas" class="content">
+      <div class="card">
+        <h2>Sistemas Operacionais</h2>
+        <p>Conteúdo em breve...</p>
+      </div>
+    </div>
+
+    <div id="web" class="content">
+      <div class="card">
+        <h2>Programação Web</h2>
+        <p>Conteúdo em breve...</p>
+      </div>
+    </div>
+
+    <div id="htmlcss" class="content">
+      <div class="card">
+        <h2>HTML e CSS</h2>
+        <p>Conteúdo em breve...</p>
+      </div>
+    </div>
+
+    <div id="logica" class="content">
+      <div class="card">
+        <h2>Lógica de Programação</h2>
+        <p>Conteúdo em breve...</p>
+      </div>
+    </div>
+
+    <div id="robotica" class="content">
+      <div class="card">
+        <h2>Noções de Robótica</h2>
+        <p>Conteúdo em breve...</p>
+      </div>
+    </div>
+
+    <div id="java" class="content">
+      <div class="card">
+        <h2>Programação Orientada a Objetos em Java</h2>
+        <p>Conteúdo em breve...</p>
+      </div>
+    </div>
+
+    <div id="gestao" class="content">
+      <div class="card">
+        <h2>Gestão de Tempo</h2>
+        <p>Conteúdo em breve...</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    Feito com 💛 por Yago — 2025
+  </footer>
+
+  <script>
+    function showTab(tabId) {
+      const contents = document.querySelectorAll('.content');
+      contents.forEach(content => content.classList.remove('active'));
+
+      const activeContent = document.getElementById(tabId);
+      if (activeContent) {
+        activeContent.classList.add('active');
+      }
+    }
+  </script>
+</body>
+</html>

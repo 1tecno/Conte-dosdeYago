@@ -3,187 +3,494 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Portal TechYago - Conteúdos de Arquitetura, Sistemas, Web, Java e mais.">
+  <meta name="keywords" content="tecnologia, arquitetura, sistemas, web, Java, programação">
   <title>Portal TechYago</title>
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/1055/1055646.png" />
+  <!-- Importando Google Fonts: Montserrat para títulos e Roboto para corpo do texto -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
   <style>
     :root {
-      --bg-main: #000000;
+      --bg-main: #000;
       --bg-header: #0a0a0a;
       --bg-tab: #1a1a1a;
       --bg-card: #111;
       --highlight: #FFD700;
       --text-color: #4fc3f7;
+      --toast-bg: rgba(0, 0, 0, 0.8);
+      --toast-color: #fff;
+      --gradient-dark: linear-gradient(135deg, #000, #333);
+      --gradient-light: linear-gradient(135deg, #f4f4f9, #dbeafe);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    body.theme-light {
+      --bg-main: #f4f4f9;
+      --bg-header: #e2e8f0;
+      --bg-tab: #dbeafe;
+      --bg-card: #ffffff;
+      --highlight: #0077ff;
+      --text-color: #1a202c;
     }
 
+    body.theme-vibrant {
+      --bg-main: #1e1e3f;
+      --bg-header: #3b0a59;
+      --bg-tab: #7400b8;
+      --bg-card: #5e60ce;
+      --highlight: #ffba08;
+      --text-color: #ffffff;
+    }
+
+    body.theme-pastel {
+      --bg-main: #ffe5ec;
+      --bg-header: #ffc2d1;
+      --bg-tab: #ffb3c1;
+      --bg-card: #ffcad4;
+      --highlight: #d291bc;
+      --text-color: #5c5470;
+    }
+
+    body.theme-cyber {
+      --bg-main: #0f0f0f;
+      --bg-header: #1a1a1a;
+      --bg-tab: #00ffff22;
+      --bg-card: #121212;
+      --highlight: #39ff14;
+      --text-color: #00f7ff;
+    }
+
+    body.theme-galaxy {
+      --bg-main: #0b0c2a;
+      --bg-header: #1c1b3a;
+      --bg-tab: #292758;
+      --bg-card: #1f1d44;
+      --highlight: #c77dff;
+      --text-color: #a0c4ff;
+    }
+
+    /* Aplicando fontes */
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Roboto', sans-serif;
       background: var(--bg-main);
       color: var(--text-color);
+      transition: background 0.5s, color 0.5s;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0 1rem;
+    }
+    h1, h2, h3, header {
+      font-family: 'Montserrat', sans-serif;
     }
 
+    /* Fundo animado Galaxy */
+    .galaxy-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .star, .planet, .meteor {
+      position: absolute;
+      border-radius: 50%;
+      background: white;
+      animation: twinkle 2s infinite;
+      will-change: opacity;
+    }
+    .star { width: 2px; height: 2px; animation-delay: calc(var(--i) * 0.3s); }
+    .planet { 
+      width: 20px; height: 20px; 
+      background: radial-gradient(circle, #a0c4ff, #1f1d44);
+      animation: float 6s ease-in-out infinite;
+      will-change: transform;
+    }
+    .meteor { 
+      width: 4px; height: 2px; 
+      background: linear-gradient(45deg, white, transparent);
+      animation: shoot 5s linear infinite;
+      animation-delay: calc(var(--i) * 4s);
+      will-change: transform, opacity;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+    @keyframes shoot {
+      0% { transform: translateX(0); opacity: 1; }
+      100% { transform: translateX(150vw); opacity: 0; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Cabeçalho */
     header {
-      background-color: var(--bg-header);
-      padding: 1.5rem;
+      background: var(--bg-header);
+      padding: 1rem;
+      font-size: 2rem;
       text-align: center;
-      font-size: 2.5rem;
       font-weight: bold;
-      color: var(--highlight);
-      box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
-      border-bottom: 2px solid var(--highlight);
+      cursor: pointer;
+      margin-bottom: 1rem;
+      position: relative;
     }
 
+    /* Botão Menu no canto superior direito */
+    .menu-btn {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      background: var(--bg-tab);
+      color: var(--text-color);
+      border: 1px solid var(--highlight);
+      border-radius: 6px;
+      cursor: pointer;
+      z-index: 1100;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .menu-btn:hover {
+      background: var(--highlight);
+      color: black;
+      transform: scale(1.05);
+    }
+
+    /* Painel Modal para seleção de Tema */
+    .theme-menu-modal {
+      display: none;
+      position: fixed;
+      top: 0; right: 0; bottom: 0; left: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1090;
+      align-items: center;
+      justify-content: center;
+    }
+    .theme-menu-content {
+      background: var(--bg-tab);
+      padding: 1rem;
+      border-radius: 8px;
+      width: 280px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      animation: slideIn 0.3s ease-out;
+    }
+    @keyframes slideIn {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .theme-menu-content h3 {
+      text-align: center;
+      margin-bottom: 0.5rem;
+      color: var(--text-color);
+    }
+    .theme-menu-content ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .theme-menu-content li {
+      margin: 0.5rem 0;
+    }
+    .theme-menu-content button {
+      width: 100%;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: transform 0.2s;
+      background: var(--gradient-dark);
+      color: var(--text-color);
+    }
+    .theme-menu-content button:hover {
+      transform: scale(1.03);
+    }
+
+    /* Navegação Principal */
     nav {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      background-color: var(--bg-tab);
+      background: var(--bg-tab);
       padding: 0.5rem;
-      border-bottom: 1px solid var(--highlight);
+      margin-bottom: 1rem;
     }
-
     nav button {
-      background-color: transparent;
+      margin: 0.3rem;
+      padding: 0.6rem 1rem;
+      background: none;
       border: 1px solid var(--highlight);
       color: var(--text-color);
-      padding: 0.75rem 1.25rem;
-      margin: 0.25rem;
-      font-size: 1rem;
+      border-radius: 8px;
       cursor: pointer;
-      border-radius: 0.5rem;
-      transition: background 0.3s, transform 0.2s, color 0.3s;
+      transition: 0.3s;
     }
-
-    nav button:hover {
-      background-color: var(--highlight);
-      color: #000;
+    nav button:hover, nav button:focus {
+      background: var(--highlight);
+      color: black;
+      box-shadow: 0 0 10px var(--highlight), 0 0 20px var(--highlight);
       transform: scale(1.05);
+      outline: none;
+    }
+    #loader {
+      text-align: center;
+      padding: 1rem;
     }
 
+    /* Área de Conteúdo usando CSS Grid */
+    main {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
     .content {
+      grid-column: 1 / -1;
       padding: 2rem;
-      display: none;
-      animation: fadeIn 0.4s ease-in-out;
+      animation: fadeIn 0.5s ease-in-out;
+      background: transparent;
     }
-
-    .content.active {
-      display: block;
-    }
-
+    .content.active { display: block; }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .card {
-      background-color: var(--bg-card);
-      border-radius: 1rem;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
-      border: 1px solid var(--highlight);
+    /* Cards de Conteúdo */
+    article.card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+      overflow: hidden;
+      position: relative;
+      /* Gradiente suave para o fundo do card */
+      background-image: var(--gradient-dark);
+    }
+    article.card:hover, article.card:focus {
+      background: var(--highlight);
+      color: black;
+      box-shadow: 0 0 15px var(--highlight);
+      outline: none;
+    }
+    article.card img {
+      width: 100%;
+      border-radius: 8px;
+      filter: brightness(0.95);
+      transition: filter 0.3s;
+    }
+    article.card img:hover {
+      filter: brightness(1);
     }
 
     footer {
+      background: var(--bg-header);
+      color: white;
       text-align: center;
-      color: var(--text-color);
-      font-size: 0.9rem;
-      padding: 2rem 1rem;
-      border-top: 1px solid var(--highlight);
-      margin-top: 2rem;
+      padding: 1rem;
+      margin-top: 1rem;
     }
+
+    @media (max-width: 768px) {
+      nav { flex-direction: column; align-items: center; }
+      article.card img { height: auto; }
+    }
+
+    /* Toast para Feedback do Usuário */
+    .toast {
+      visibility: hidden;
+      min-width: 250px;
+      margin-left: -125px;
+      background-color: var(--toast-bg);
+      color: var(--toast-color);
+      text-align: center;
+      border-radius: 8px;
+      padding: 16px;
+      position: fixed;
+      left: 50%;
+      bottom: 30px;
+      z-index: 1000;
+      transition: visibility 0s, opacity 0.5s linear;
+      opacity: 0;
+    }
+    .toast.show { visibility: visible; opacity: 1; }
   </style>
 </head>
-<body>
-  <header>Portal TechYago</header>
+<body class="theme-dark">
+  <!-- Botão Menu no canto superior direito -->
+  <button class="menu-btn" onclick="toggleThemeMenu()">Menu</button>
 
-  <nav>
-    <button onclick="showTab('arquitetura')">Arquitetura</button>
-    <button onclick="showTab('sistemas')">Sistemas Operacionais</button>
-    <button onclick="showTab('web')">Programação Web</button>
-    <button onclick="showTab('htmlcss')">HTML/CSS</button>
-    <button onclick="showTab('logica')">Lógica de Programação</button>
-    <button onclick="showTab('robotica')">Noções de Robótica</button>
-    <button onclick="showTab('java')">POO em Java</button>
-    <button onclick="showTab('gestao')">Gestão de Tempo</button>
+  <!-- Painel Modal para seleção de Tema -->
+  <div id="themeMenuModal" class="theme-menu-modal" onclick="toggleThemeMenu(event)">
+    <div class="theme-menu-content" onclick="event.stopPropagation()">
+      <h3>Selecione seu Tema</h3>
+      <ul>
+        <!-- Temas com cores mais escuras -->
+        <li><button onclick="setTheme('theme-dark'); toggleThemeMenu()">🌑 Dark</button></li>
+        <li><button onclick="setTheme('theme-cyber'); toggleThemeMenu()">🤖 Neo Cyber</button></li>
+        <li><button onclick="setTheme('theme-galaxy'); toggleThemeMenu()">🌌 Galaxy</button></li>
+        <li><button onclick="setTheme('theme-vibrant'); toggleThemeMenu()">🎨 Vibrant</button></li>
+        <!-- Temas com cores mais claras -->
+        <li><button onclick="setTheme('theme-light'); toggleThemeMenu()">☀️ Light</button></li>
+        <li><button onclick="setTheme('theme-pastel'); toggleThemeMenu()">🧁 Pastel</button></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Fundo Galaxy (apenas para theme-galaxy) -->
+  <div id="galaxyBackground" class="galaxy-bg" style="display: none;">
+    <div class="star" style="top:10%; left:20%; --i:1;"></div>
+    <div class="star" style="top:50%; left:80%; --i:2;"></div>
+    <div class="star" style="top:30%; left:60%; --i:3;"></div>
+    <div class="meteor" style="top:10%; left:-100px; --i:1;"></div>
+    <div class="planet" style="top:70%; left:10%;"></div>
+    <div class="planet" style="top:20%; left:80%;"></div>
+  </div>
+
+  <header onclick="headerClicks()">Portal TechYago</header>
+
+  <!-- Navegação Principal -->
+  <nav role="navigation" aria-label="Menu principal">
+    <button onclick="showTab('arquitetura')">🖥️ Arquitetura</button>
+    <button onclick="showTab('sistemas')">🧠 Sistemas</button>
+    <button onclick="showTab('web')">🌐 Web</button>
+    <button onclick="showTab('htmlcss')">💻 HTML/CSS</button>
+    <button onclick="showTab('logica')">🧩 Lógica</button>
+    <button onclick="showTab('robotica')">🤖 Robótica</button>
+    <button onclick="showTab('java')">☕ Java</button>
+    <button onclick="showTab('gestao')">⏱️ Gestão</button>
+    <button onclick="showTab('matematica')">🧮 Matemática</button>
+    <button onclick="showTab('redes')">📡 Redes</button>
   </nav>
 
-  <main>
-    <div id="arquitetura" class="content active">
-      <div class="card">
-        <h2>Arquitetura e Manutenção de Computadores</h2>
-        <p>Conteúdo em breve...</p>
-      </div>
-    </div>
+  <!-- Loader que é ocultado após o carregamento completo da página -->
+  <div id="loader">Carregando conteúdo...</div>
 
-    <div id="sistemas" class="content">
-      <div class="card">
-        <h2>Sistemas Operacionais</h2>
+  <!-- Área de Conteúdo utilizando CSS Grid e elementos semânticos -->
+  <section id="mainContent">
+    <div id="arquitetura" class="content active" data-aos="fade-up">
+      <article class="card" tabindex="0">
+        <img src="https://source.unsplash.com/600x200/?computer" alt="Computador moderno e tecnológico" loading="lazy">
+        <h2>Arquitetura e Manutenção</h2>
         <p>Conteúdo em breve...</p>
-      </div>
+      </article>
     </div>
-
-    <div id="web" class="content">
-      <div class="card">
-        <h2>Programação Web</h2>
-        <p>Conteúdo em breve...</p>
-      </div>
+    <div id="sistemas" class="content" data-aos="fade-up">
+      <article class="card" tabindex="0"><p>Conteúdo em breve...</p></article>
     </div>
-
-    <div id="htmlcss" class="content">
-      <div class="card">
-        <h2>HTML e CSS</h2>
-        <p>Conteúdo em breve...</p>
-      </div>
+    <div id="web" class="content" data-aos="fade-up">
+      <article class="card" tabindex="0"><p>Conteúdo em breve...</p></article>
     </div>
-
-    <div id="logica" class="content">
-      <div class="card">
-        <h2>Lógica de Programação</h2>
-        <p>Conteúdo em breve...</p>
-      </div>
+    <div id="htmlcss" class="content" data-aos="fade-up">
+      <article class="card" tabindex="0"><p>Conteúdo em breve...</p></article>
     </div>
-
-    <div id="robotica" class="content">
-      <div class="card">
-        <h2>Noções de Robótica</h2>
-        <p>Conteúdo em breve...</p>
-      </div>
+    <div id="logica" class="content" data-aos="fade-up">
+      <article class="card" tabindex="0"><p>Conteúdo em breve...</p></article>
     </div>
-
-    <div id="java" class="content">
-      <div class="card">
-        <h2>Programação Orientada a Objetos em Java</h2>
-        <p>Conteúdo em breve...</p>
-      </div>
+    <div id="robotica" class="content" data-aos="fade-up">
+      <article class="card" tabindex="0"><p>Conteúdo em breve...</p></article>
     </div>
-
-    <div id="gestao" class="content">
-      <div class="card">
-        <h2>Gestão de Tempo</h2>
-        <p>Conteúdo em breve...</p>
-      </div>
+    <div id="java" class="content" data-aos="fade-up">
+      <article class="card" tabindex="0"><p>Conteúdo em breve...</p></article>
     </div>
-  </main>
+    <div id="gestao" class="content" data-aos="fade-up">
+      <article class="card" tabindex="0"><p>Conteúdo em breve...</p></article>
+    </div>
+    <div id="matematica" class="content" data-aos="fade-up">
+      <article class="card" tabindex="0"><p>Conteúdo em breve...</p></article>
+    </div>
+    <div id="redes" class="content" data-aos="fade-up">
+      <article class="card" tabindex="0"><p>Conteúdo em breve...</p></article>
+    </div>
+  </section>
 
   <footer>
-    Feito com 💛 por Yago — 2025
+    Feito com 💛 por Yago — 2025<br>
+    <a href="https://www.instagram.com/z_yago_1227" target="_blank" style="color:white; margin: 0 8px;">
+      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" width="20" style="vertical-align: middle;" alt="Instagram TechYago" /> @z_yago_1227
+    </a> |
+    <a href="https://www.tiktok.com/@yago1227breck" target="_blank" style="color:white; margin: 0 8px;">
+      <img src="https://cdn-icons-png.flaticon.com/512/3046/3046122.png" width="20" style="vertical-align: middle;" alt="TikTok TechYago" /> TikTok
+    </a> |
+    <a href="https://www.instagram.com/nauanloures" target="_blank" style="color:white; margin: 0 8px;">
+      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" width="20" style="vertical-align: middle;" alt="Instagram Nauanloures" /> @nauanloures
+    </a>
   </footer>
 
-  <script>
-    function showTab(tabId) {
-      const contents = document.querySelectorAll('.content');
-      contents.forEach(content => content.classList.remove('active'));
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js" async></script>
+  <script async>
+    AOS.init();
 
-      const activeContent = document.getElementById(tabId);
-      if (activeContent) {
-        activeContent.classList.add('active');
+    // Oculta o loader assim que a página for completamente carregada
+    window.addEventListener('load', function() {
+      document.getElementById("loader").style.display = "none";
+    });
+
+    // Alterna entre conteúdos
+    function showTab(tabId) {
+      document.getElementById("loader").style.display = "block";
+      setTimeout(() => {
+        document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        document.getElementById("loader").style.display = "none";
+      }, 300);
+    }
+
+    // Define o tema e salva no localStorage
+    function setTheme(themeName) {
+      document.body.className = themeName;
+      localStorage.setItem('theme', themeName);
+      document.getElementById("galaxyBackground").style.display = themeName === "theme-galaxy" ? "block" : "none";
+    }
+    const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'theme-dark' : 'theme-light');
+    setTheme(savedTheme);
+
+    // Toast para feedback
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Ações para os cards
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', () => showToast('Este conteúdo estará disponível em breve! 🚧'));
+      card.addEventListener('keypress', (e) => {
+        if(e.key === 'Enter') showToast('Este conteúdo estará disponível em breve! 🚧');
+      });
+    });
+
+    let clicks = 0;
+    function headerClicks() {
+      clicks++;
+      if (clicks >= 5) {
+        showToast("Você desbloqueou a área secreta de desenvolvimento! 🧪");
+        clicks = 0;
+      }
+    }
+
+    // Alterna exibição do painel de temas
+    function toggleThemeMenu(e) {
+      const modal = document.getElementById('themeMenuModal');
+      if(e && e.target === modal) {
+        modal.style.display = "none";
+      } else if(modal.style.display === "flex") {
+        modal.style.display = "none";
+      } else {
+        modal.style.display = "flex";
       }
     }
   </script>
+  <!-- Toast para Feedback do Usuário -->
+  <div id="toast" class="toast">Conteúdo em breve! 🚧</div>
 </body>
 </html>
